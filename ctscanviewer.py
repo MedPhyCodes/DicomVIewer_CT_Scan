@@ -41,18 +41,8 @@ if uploaded_file is not None:
     hu_low =st.slider("Lower HU value: ",imarray.min(),imarray.max(),1)
     hu_high =st.slider("Higher HU value: ",imarray.min(),imarray.max(),1)
     
-    
-    #add a drop down for window level presets
-    #add a ruler tool to measure the distance between points
-    #dropdown to switch to axial/sagital/coronal view
-    #tool to measure distance
-    
-    
-    
-    
-    
-    
-    
+
+ 
     
     fig=px.imshow(HU_mask(imarray[slice_number],hu_low,hu_high),color_continuous_scale="gray")
     fig.update_layout( xaxis=dict(showticklabels=False), yaxis=dict(showticklabels=False),
@@ -61,6 +51,17 @@ if uploaded_file is not None:
     
     )  
     st.plotly_chart(fig, use_container_width=True)
+
+
+
+
+
+    
+    #add a drop down for window level presets
+    #add a ruler tool to measure the distance between points
+    #dropdown to switch to axial/sagital/coronal view
+    #tool to measure distance
+    
     
     
 
