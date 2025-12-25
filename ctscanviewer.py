@@ -1,6 +1,5 @@
 import streamlit as st
 import SimpleITK as sk
-import matplotlib.pyplot as plt
 import plotly.express as px
 import numpy as np
 import zipfile
