@@ -26,8 +26,8 @@ def HU_mask(ct,hu_l,hu_h):
     ct_l = np.where(((ct>=hu_l) & (ct<=hu_h)),ct,np.where(ct>hu_h ,imarray.max(),imarray.min()) )
     return ct_l
 
+uploaded_file = st.file_uploader("Upload the CT Scan ZIP folder", type=["zip"]) 
 
-uploaded_file = st.file_uploader("Upload a ZIP folder", type=["zip"]) 
 if uploaded_file is not None:
     imarray = load_dicom(uploaded_file)
 
