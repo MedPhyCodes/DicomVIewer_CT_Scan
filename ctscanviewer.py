@@ -9,7 +9,7 @@ import io
 import tempfile
 
 
-# st.set_page_config(layout="wide")
+st.set_page_config(layout="wide")
 
 
 
@@ -107,10 +107,10 @@ if uploaded_file is not None:
 
         fig=px.imshow(HU_mask(imarray[slice_number],hu_low,hu_high),color_continuous_scale="gray")
         fig.update_layout( xaxis=dict(showticklabels=False), yaxis=dict(showticklabels=False),
-        coloraxis_showscale=False,
+        coloraxis_showscale=False,height =1200
         
         )  
-        st.plotly_chart(fig, use_container_width=True,height =1200)
+        st.plotly_chart(fig, use_container_width=True)
                        
 
 
