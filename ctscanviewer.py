@@ -11,21 +11,12 @@ import tempfile
 
 
 
-# uploaded_file = st.file_uploader("Upload a ZIP folder", type=["zip"])
-# if uploaded_file is not None:
-#     with zipfile.ZipFile(uploaded_file, "r") as zip_ref:
-#         zip_ref.extractall("uploaded_folder")
-
-
 @st.cache_data
-
-
-
 def load_dicom(uploaded_file):
     tempdir = tempfile.mkdtemp()
     reader = sk.ImageSeriesReader()
 
-    # Case 1: Uploaded file is a ZIP (Android, or manual zip)
+    # If Uploaded file is a ZIP (Android, or manual zip)
     if uploaded_file.name.lower().endswith(".zip"):
         zip_path = os.path.join(tempdir, uploaded_file.name)
         with open(zip_path, "wb") as f:
@@ -34,7 +25,7 @@ def load_dicom(uploaded_file):
             zip_ref.extractall(tempdir)
         search_path = tempdir
 
-    # Case 2: Uploaded file is a single DICOM
+    # If Uploaded file is a single DICOM
     elif uploaded_file.name.lower().endswith(".dcm"):
         file_path = os.path.join(tempdir, uploaded_file.name)
         with open(file_path, "wb") as f:
@@ -43,7 +34,7 @@ def load_dicom(uploaded_file):
         image = sk.ReadImage(file_path)
         return sk.GetArrayFromImage(image)
 
-    # Case 3: Uploaded folder (Streamlit can give you a directory path if running locally)
+  
     else:
         if os.path.isdir(uploaded_file):
             search_path = uploaded_file
@@ -53,7 +44,7 @@ def load_dicom(uploaded_file):
                 f.write(uploaded_file.getbuffer())
             search_path = tempdir
 
-    # Walk through search_path for DICOM files
+  
     dicom_files = []
     for root, _, files in os.walk(search_path):
         for f in files:
@@ -63,13 +54,13 @@ def load_dicom(uploaded_file):
     if not dicom_files:
         raise ValueError("No DICOM files found in uploaded input.")
 
-    # Use ImageSeriesReader to build a volume
+
     reader = sk.ImageSeriesReader()
     series_IDs = reader.GetGDCMSeriesIDs(search_path)
     if not series_IDs:
         raise ValueError("No DICOM series found in uploaded folder.")
 
-    # Pick the first series (or extend to let user choose)
+
     series_file_names = reader.GetGDCMSeriesFileNames(search_path, series_IDs[0])
     reader.SetFileNames(series_file_names)
     image = reader.Execute()
