@@ -72,7 +72,7 @@ def load_dicom(uploaded_file):
 
 
 
-uploaded_file = st.file_uploader("Upload the CT ZIP", type=["zip"]) 
+uploaded_file = st.file_uploader("Upload the CT ZIP") 
 if uploaded_file is not None:
     imarray = load_dicom(uploaded_file)
 
