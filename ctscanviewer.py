@@ -72,7 +72,8 @@ def load_dicom(uploaded_file):
 
 st.write("attempt3")
 
-uploaded_file = st.file_uploader("Upload the CT ZIP") 
+uploaded_file = st.file_uploader("Upload CT ZIP or DICOM", type=["zip", "dcm"])
+ 
 if uploaded_file is not None:
     imarray = load_dicom(uploaded_file)
 
