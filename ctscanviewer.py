@@ -8,8 +8,8 @@ import io
 
 
 @st.cache_data
-def load_dicom(uploaded_file): # Extract ZIP into a temp folder 
-    with zipfile.ZipFile(uploaded_file, "r") as zip_ref: zip_ref.extractall("uploaded_folder") # Read DICOM series 
+def load_dicom(uploaded_file): 
+    with zipfile.ZipFile(uploaded_file, "r") as zip_ref: zip_ref.extractall("uploaded_folder") 
     reader = sk.ImageSeriesReader() 
     series_IDs = reader.GetGDCMSeriesIDs("uploaded_folder") 
     if not series_IDs: raise ValueError("No DICOM series found in uploaded folder.") 
@@ -22,7 +22,7 @@ def HU_mask(ct,hu_l,hu_h):
     ct_l = np.where(((ct>=hu_l) & (ct<=hu_h)),ct,np.where(ct>hu_h ,imarray.max(),imarray.min()) )
     return ct_l
 
-uploaded_file = st.file_uploader("Upload the CT Scan ZIP folder", type=["zip"]) 
+uploaded_file = st.file_uploader("Upload the CT Scan ZIP file", type=["zip"]) 
 
 if uploaded_file is not None:
     imarray = load_dicom(uploaded_file)  
