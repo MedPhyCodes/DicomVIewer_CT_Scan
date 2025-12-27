@@ -14,7 +14,7 @@ def load_dicom(uploaded_file):
     tempdir = tempfile.mkdtemp()
     reader = sk.ImageSeriesReader()
 
-    # ZIP case
+   # if ZIP
     if uploaded_file.name.lower().endswith(".zip"):
         zip_path = os.path.join(tempdir, uploaded_file.name)
         with open(zip_path, "wb") as f:
@@ -23,7 +23,7 @@ def load_dicom(uploaded_file):
             zip_ref.extractall(tempdir)
         search_path = tempdir
 
-    # Single DICOM case
+    # if single DICOM file
     elif uploaded_file.name.lower().endswith(".dcm"):
         file_path = os.path.join(tempdir, uploaded_file.name)
         with open(file_path, "wb") as f:
@@ -31,7 +31,7 @@ def load_dicom(uploaded_file):
         image = sk.ReadImage(file_path)
         return sk.GetArrayFromImage(image)
 
-    # Fallback
+
     else:
         if os.path.isdir(uploaded_file):
             search_path = uploaded_file
@@ -41,7 +41,7 @@ def load_dicom(uploaded_file):
                 f.write(uploaded_file.getbuffer())
             search_path = tempdir
 
-    # Collect DICOM files
+ 
     dicom_files = []
     for root, _, files in os.walk(search_path):
         for f in files:
@@ -51,7 +51,7 @@ def load_dicom(uploaded_file):
     if not dicom_files:
         raise ValueError("No DICOM files found in uploaded input.")
 
-    # Use the folder containing the first DICOM
+  
     dicom_dir = os.path.dirname(dicom_files[0])
     series_IDs = reader.GetGDCMSeriesIDs(dicom_dir)
     if not series_IDs:
@@ -66,7 +66,6 @@ def load_dicom(uploaded_file):
 
 
 
-st.write("attempt3")
 
 uploaded_file = st.file_uploader("Upload CT ZIP or DICOM", type=["zip", "dcm"])
  
