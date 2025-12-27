@@ -9,14 +9,12 @@ import io
 import tempfile
 
 
-
-
 @st.cache_data
 def load_dicom(uploaded_file):
     tempdir = tempfile.mkdtemp()
     reader = sk.ImageSeriesReader()
 
-    # If Uploaded file is a ZIP (Android, or manual zip)
+    # ZIP case
     if uploaded_file.name.lower().endswith(".zip"):
         zip_path = os.path.join(tempdir, uploaded_file.name)
         with open(zip_path, "wb") as f:
@@ -25,16 +23,15 @@ def load_dicom(uploaded_file):
             zip_ref.extractall(tempdir)
         search_path = tempdir
 
-    # If Uploaded file is a single DICOM
+    # Single DICOM case
     elif uploaded_file.name.lower().endswith(".dcm"):
         file_path = os.path.join(tempdir, uploaded_file.name)
         with open(file_path, "wb") as f:
             f.write(uploaded_file.getbuffer())
-        # Read directly as a 2D image
         image = sk.ReadImage(file_path)
         return sk.GetArrayFromImage(image)
 
-  
+    # Fallback
     else:
         if os.path.isdir(uploaded_file):
             search_path = uploaded_file
@@ -44,7 +41,7 @@ def load_dicom(uploaded_file):
                 f.write(uploaded_file.getbuffer())
             search_path = tempdir
 
-  
+    # Collect DICOM files
     dicom_files = []
     for root, _, files in os.walk(search_path):
         for f in files:
@@ -54,16 +51,13 @@ def load_dicom(uploaded_file):
     if not dicom_files:
         raise ValueError("No DICOM files found in uploaded input.")
 
-
-    reader = sk.ImageSeriesReader()
-    series_IDs = reader.GetGDCMSeriesIDs(search_path)
+    # Use the folder containing the first DICOM
+    dicom_dir = os.path.dirname(dicom_files[0])
+    series_IDs = reader.GetGDCMSeriesIDs(dicom_dir)
     if not series_IDs:
-        st.write("Uploaded file name:", uploaded_file.name)
-
         raise ValueError("No DICOM series found in uploaded folder.")
 
-
-    series_file_names = reader.GetGDCMSeriesFileNames(search_path, series_IDs[0])
+    series_file_names = reader.GetGDCMSeriesFileNames(dicom_dir, series_IDs[0])
     reader.SetFileNames(series_file_names)
     image = reader.Execute()
 
