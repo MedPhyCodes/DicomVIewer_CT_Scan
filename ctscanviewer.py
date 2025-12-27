@@ -70,7 +70,7 @@ def load_dicom(uploaded_file):
 
 
 
-
+st.write("attempt3")
 
 uploaded_file = st.file_uploader("Upload the CT ZIP") 
 if uploaded_file is not None:
