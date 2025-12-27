@@ -58,6 +58,8 @@ def load_dicom(uploaded_file):
     reader = sk.ImageSeriesReader()
     series_IDs = reader.GetGDCMSeriesIDs(search_path)
     if not series_IDs:
+        st.write("Uploaded file name:", uploaded_file.name)
+
         raise ValueError("No DICOM series found in uploaded folder.")
 
 
