@@ -81,7 +81,7 @@ if uploaded_file is not None:
 
     col1,col2 = st.columns([2,5])
     with col1:
-        st.markdown("<br><br><br><br><br><br><br><br>", unsafe_allow_html=True)
+        st.markdown("<br><br><br><br><br><br><br>", unsafe_allow_html=True)
         slice_number = st.slider("Slice Number: ",1,imarray.shape[0]-1,1)
         hu_low =st.slider("Lower HU value: ",imarray.min(),imarray.max(),1)
         hu_high =st.slider("Higher HU value: ",imarray.min(),imarray.max(),1)
