@@ -107,7 +107,7 @@ if uploaded_file is not None:
 
         fig=px.imshow(HU_mask(imarray[slice_number],hu_low,hu_high),color_continuous_scale="gray")
         fig.update_layout( xaxis=dict(showticklabels=False), yaxis=dict(showticklabels=False),
-        coloraxis_showscale=False,height =1200
+        coloraxis_showscale=False,height =800
         
         )  
         st.plotly_chart(fig, use_container_width=True)
